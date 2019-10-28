@@ -2,18 +2,31 @@ package com.vvvgames.zbhelpers;
 
 import com.badlogic.gdx.InputProcessor;
 import com.vvvgames.gameobjects.Bird;
+import com.vvvgames.gameworld.GameWorld;
 
 public class InputHandler implements InputProcessor {
 
+    private GameWorld myWorld;
     private Bird myBird;
 
-    public InputHandler(Bird bird) {
-        this.myBird = bird;
+    public InputHandler(GameWorld myWorld) {
+        this.myWorld = myWorld;
+        myBird = myWorld.getBird();
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+        if (myWorld.isReady()) {
+            myWorld.start();
+        }
+
         myBird.onClick();
+
+        if (myWorld.isGameOver()) {
+            myWorld.restart();
+        }
+
         return true;
     }
 
